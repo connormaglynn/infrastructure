@@ -43,3 +43,11 @@ resource "aws_route53_record" "www" {
 output "name_servers" {
   value = aws_route53_zone.primary.name_servers
 }
+
+resource "aws_route53_record" "blog" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "blog.connorglynn.com"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["connormaglynn.github.io"]
+}
