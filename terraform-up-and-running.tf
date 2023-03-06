@@ -13,7 +13,7 @@ resource "aws_security_group" "instance" {
 
 # EC2 instance with a basic web server
 resource "aws_instance" "example" {
-  ami                    = "ami-006dcf34c09e50022"
+  ami                    = "ami-0aaa5410833273cfe"
   instance_type          = "t2.nano"
   vpc_security_group_ids = [aws_security_group.instance.id]
 
