@@ -82,8 +82,8 @@
 ## variables for server cluster
 variable "server_port" {
   description = "Port for servers"
-  type = number
-  default = 8080
+  type        = number
+  default     = 8080
 }
 
 ## data sources for server cluster
