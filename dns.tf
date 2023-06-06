@@ -34,3 +34,11 @@ resource "aws_route53_record" "bakery" {
   ttl     = "300"
   records = ["connormaglynn.github.io"]
 }
+
+resource "aws_route53_record" "firebase-playground" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "firebase-playground.connorglynn.com"
+  type    = "A"
+  ttl     = "300"
+  records = ["199.36.158.100"]
+}
