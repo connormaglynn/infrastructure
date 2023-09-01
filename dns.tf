@@ -27,9 +27,9 @@ resource "aws_route53_record" "www" {
   records = ["connormaglynn.github.io"]
 }
 
-resource "aws_route53_record" "bakery" {
+resource "aws_route53_record" "tillysofcastleton" {
   zone_id = aws_route53_zone.primary.zone_id
-  name    = "bakery.connorglynn.com"
+  name    = "tillysofcastleton.connorglynn.com"
   type    = "CNAME"
   ttl     = "300"
   records = ["connormaglynn.github.io"]
