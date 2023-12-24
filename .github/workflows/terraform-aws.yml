@@ -3,8 +3,14 @@ name: 'Terraform - AWS'
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - 'terraform/aws/**'
+      - '.github/workflows/terraform-aws.yml'
   push:
     branches: [ main ]
+    paths:
+      - 'terraform/aws/**'
+      - '.github/workflows/terraform-aws.yml'
 
 defaults:
   run:
