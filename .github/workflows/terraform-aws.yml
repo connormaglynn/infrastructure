@@ -27,6 +27,9 @@ jobs:
     if: github.ref != 'refs/heads/main'
     name: 'Plan'
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TF_IN_AUTOMATION: true
 
     steps:
     - name: Checkout
@@ -41,7 +44,21 @@ jobs:
       run: terraform init
 
     - name: Terraform Plan
+      id: plan
       run: terraform plan
+      continue-on-error: true
+
+    - name: Comment Plan
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          Terraform Plan:
+
+          ```
+          ${{ steps.plan.outputs.stdout }}
+          ```
 
     - name: Terraform Graph
       run: terraform graph
