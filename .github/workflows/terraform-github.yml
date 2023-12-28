@@ -18,8 +18,8 @@ defaults:
     shell: bash
 
 jobs:
-  terraform-plan:
-    name: 'Terraform GitHub Plan'
+  plan:
+    name: 'Plan'
     runs-on: ubuntu-latest
 
     steps:
@@ -38,12 +38,11 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        if: github.ref != 'refs/heads/main'
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -out=${{ github.workspace }}/tfplanoutput/tf.plan
 
       - name: Comment Plan
-        if: always() && steps.plan.outputs.stdout && github.ref != 'refs/heads/main'
+        if: always() && steps.plan.outputs.stdout
         uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -57,13 +56,19 @@ jobs:
             ${{ steps.plan.outputs.stdout }}
             ```
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/tfplanoutput/
+          if-no-files-found: error
+
       - name: Terraform Graph
-        if: github.ref != 'refs/heads/main'
         run: terraform graph
 
 
-  terraform-apply:
-    name: 'Terraform GitHub Apply'
+  apply:
+    name: 'Apply'
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
@@ -77,5 +82,11 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/tfplanoutput
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply tf.plan -auto-approve
