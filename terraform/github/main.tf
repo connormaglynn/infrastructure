@@ -2,7 +2,7 @@ terraform {
   backend "remote" {
     organization = "connormaglynn"
     workspaces {
-      name = "infrastructure"
+      name = "github"
     }
   }
   required_providers {
