@@ -18,10 +18,9 @@ defaults:
     shell: bash
 
 jobs:
-  terraform-github:
-    name: 'Terraform GitHub'
+  terraform-plan:
+    name: 'Terraform GitHub Plan'
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout
@@ -41,7 +40,7 @@ jobs:
       - name: Terraform Plan
         if: github.ref != 'refs/heads/main'
         id: plan
-        run: terraform plan
+        run: terraform plan -no-color
 
       - name: Comment Plan
         if: always() && steps.plan.outputs.stdout && github.ref != 'refs/heads/main'
@@ -52,7 +51,7 @@ jobs:
           body: |
             Terraform Plan:
             
-            https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}
+            https://github.com/${{ github.repository }}/pull/${{ github.event.number }}/checks#step:6:1
 
             ```
             ${{ steps.plan.outputs.stdout }}
@@ -62,6 +61,21 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: terraform graph
 
+
+  terraform-apply:
+    name: 'Terraform GitHub Apply'
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve
