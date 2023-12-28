@@ -1,5 +1,5 @@
 resource "github_repository" "example_of_terraform_managed" {
-  name                      = "example-of-terraform-managed"
+  name                      = "example-of-terraform-managed-1"
   description               = "This repository is managed in Terraform"
   visibility                = "public"
   allow_merge_commit        = false

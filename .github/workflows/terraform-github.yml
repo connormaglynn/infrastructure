@@ -18,60 +18,8 @@ defaults:
     shell: bash
 
 jobs:
-  lint:
-    name: 'Lint'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Terraform Format
-        run: terraform fmt -check
-
-  plan:
-    if: github.ref != 'refs/heads/main'
-    name: 'Plan'
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      TF_IN_AUTOMATION: true
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init
-
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan
-      continue-on-error: true
-
-    - name: Comment Plan
-      uses: peter-evans/create-or-update-comment@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          Terraform Plan:
-
-          ```
-          ${{ steps.plan.outputs.stdout }}
-          ```
-
-    - name: Terraform Graph
-      run: terraform graph
-
-  apply:
-    if: github.ref == 'refs/heads/main'
-    name: 'Apply'
+  terraform-github:
+    name: 'Terraform GitHub'
     runs-on: ubuntu-latest
     environment: production
 
@@ -84,8 +32,36 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Terraform Format
+        run: terraform fmt -check
+
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Plan
+        if: github.ref != 'refs/heads/main'
+        id: plan
+        run: terraform plan
+
+      - name: Comment Plan
+        if: always() && steps.plan.outputs.stdout && github.ref != 'refs/heads/main'
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Terraform Plan:
+            
+            https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}
+
+            ```
+            ${{ steps.plan.outputs.stdout }}
+            ```
+
+      - name: Terraform Graph
+        if: github.ref != 'refs/heads/main'
+        run: terraform graph
+
       - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve
