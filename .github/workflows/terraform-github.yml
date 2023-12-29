@@ -18,6 +18,17 @@ defaults:
     shell: bash
 
 jobs:
+  lint:
+    name: 'Lint'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
   plan:
     name: 'Plan'
     runs-on: ubuntu-latest
@@ -31,18 +42,14 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Terraform Format
-        run: terraform fmt -check
-
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -out=${{ github.workspace }}/tfplanoutput/tf.plan
+        run: terraform plan -no-color
 
       - name: Comment Plan
-        if: always() && steps.plan.outputs.stdout
         uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,26 +57,16 @@ jobs:
           body: |
             Terraform Plan:
             
-            https://github.com/${{ github.repository }}/pull/${{ github.event.number }}/checks#step:6:1
+            https://github.com/${{ github.repository }}/pull/${{ github.event.number }}/checks#step:5:1
 
             ```
             ${{ steps.plan.outputs.stdout }}
             ```
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifact
-          path: ${{ github.workspace }}/tfplanoutput/
-          if-no-files-found: error
-
-      - name: Terraform Graph
-        run: terraform graph
-
-
   apply:
     name: 'Apply'
     if: github.ref == 'refs/heads/main'
+    needs: [ lint, plan ]
     runs-on: ubuntu-latest
     environment: production
 
@@ -82,11 +79,5 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: artifact
-          path: ${{ github.workspace }}/tfplanoutput
-
       - name: Terraform Apply
-        run: terraform apply tf.plan -auto-approve
+        run: terraform apply -auto-approve
