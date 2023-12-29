@@ -1,5 +1,4 @@
-# Test change
-name: 'Terraform - GitHub'
+name: 'Terraform - AWS'
 
 on:
   pull_request:
