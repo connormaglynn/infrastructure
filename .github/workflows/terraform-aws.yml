@@ -17,6 +17,10 @@ defaults:
     working-directory: ./terraform/aws
     shell: bash
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   lint:
     name: 'Lint'
@@ -30,48 +34,45 @@ jobs:
         run: terraform fmt -check
 
   plan:
-    if: github.ref != 'refs/heads/main'
     name: 'Plan'
+    needs: lint
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      TF_IN_AUTOMATION: true
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Terraform Init
-      run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan
-      continue-on-error: true
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
 
-    - name: Comment Plan
-      uses: peter-evans/create-or-update-comment@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          Terraform Plan:
+      - name: Comment Plan
+        if: github.ref != 'refs/heads/main'
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Terraform Plan:
+            
+            https://github.com/${{ github.repository }}/pull/${{ github.event.number }}/checks#step:5:1
 
-          ```
-          ${{ steps.plan.outputs.stdout }}
-          ```
-
-    - name: Terraform Graph
-      run: terraform graph
+            ```
+            ${{ steps.plan.outputs.stdout }}
+            ```
 
   apply:
-    if: github.ref == 'refs/heads/main'
     name: 'Apply'
+    if: github.ref == 'refs/heads/main'
+    needs: plan
     runs-on: ubuntu-latest
     environment: production
 
