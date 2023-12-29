@@ -5,13 +5,13 @@ terraform {
 
     # The name of the Terraform Cloud workspace to store Terraform state files in.
     workspaces {
-      name = "infrastructure"
+      name = "aws"
     }
   }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.31.0"
     }
   }
 }
