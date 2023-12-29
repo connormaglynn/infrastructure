@@ -54,6 +54,7 @@ jobs:
         run: terraform plan -no-color
 
       - name: Comment Plan
+        if: github.ref != 'refs/heads/main'
         uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
