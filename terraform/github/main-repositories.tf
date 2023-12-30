@@ -10,11 +10,6 @@ resource "github_repository" "example_of_terraform_managed" {
   delete_branch_on_merge    = true
 }
 
-import {
-  id = "infrastructure"
-  to = github_repository.infrastructure
-}
-
 resource "github_repository" "infrastructure" {
   name                      = "infrastructure"
   description               = "This repository is managed in Terraform"
@@ -25,4 +20,21 @@ resource "github_repository" "infrastructure" {
   squash_merge_commit_title = "PR_TITLE"
   auto_init                 = true
   delete_branch_on_merge    = true
+}
+
+import {
+  id = "scripts"
+  to = module.repositories.github_repository.repositories["scripts"]
+}
+
+module "repositories" {
+  source = "./modules/repositories"
+  repositories = [
+    {
+      name = "scripts"
+    }
+  ]
+  providers = {
+    github = github
+  }
 }
