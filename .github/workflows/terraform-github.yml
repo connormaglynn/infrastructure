@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   lint:
-    name: 'Lint'
+    name: 'Check Format and Validate'
     runs-on: ubuntu-latest
 
     steps:
@@ -32,6 +32,17 @@ jobs:
 
       - name: Terraform Format
         run: terraform fmt -check -diff
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
 
   plan:
     name: 'Plan'
