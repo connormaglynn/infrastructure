@@ -1,6 +1,6 @@
-moved {
-  from = github_repository.infrastructure
-  to   = github_repository.repositories["infrastructure"]
+import {
+  id = "advent-of-code-typescript"
+  to = github_repository.repositories["advent-of-code-typescript"]
 }
 
 resource "github_repository" "repositories" {
