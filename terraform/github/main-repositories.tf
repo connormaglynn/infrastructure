@@ -68,4 +68,8 @@ resource "github_repository" "repositories" {
   squash_merge_commit_title = "PR_TITLE"
   auto_init                 = true
   delete_branch_on_merge    = true
+
+  lifecycle {
+    ignore_changes = [pages, template]
+  }
 }
