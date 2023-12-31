@@ -6,6 +6,7 @@ resource "github_repository" "repositories" {
   description               = each.value.description
   visibility                = each.value.visibility
   is_template               = each.value.is_template
+  topics                    = each.value.topics
   allow_merge_commit        = false
   allow_squash_merge        = true
   allow_rebase_merge        = false
