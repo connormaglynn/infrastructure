@@ -3,43 +3,44 @@ repositories = [
     name = "advent-of-code-typescript"
   },
   {
-    name = "infrastructure"
-  },
-  {
-    name = "scripts"
-  },
-  {
-    name = "firebase-playground"
-  },
-  {
-    name = "learning-golang"
-  },
-  {
-    name = "tillysofcastleton.com"
+    name = "connorglynn.com"
   },
   {
     name = "developer-navigation-browser-plugin"
   },
   {
-    name        = "typescript-template"
-    is_template = true
+    name = "firebase-playground"
   },
   {
-    name = "connorglynn.com"
-  },
-  {
-    name = "learning-python"
-  },
-  {
-    name = "shopping-cart-typescript"
-  },
-  {
-    name = "imust-cli"
+    name = "garrettys.com"
   },
   {
     name = "gemsbook-keeping.co.uk"
   },
   {
-    name = "garrettys.com"
-  }
+    name = "imust-cli"
+  },
+  {
+    name = "infrastructure"
+  },
+  {
+    name = "learning-golang"
+  },
+  {
+    name = "learning-python"
+  },
+  {
+    name = "scripts"
+  },
+  {
+    name = "shopping-cart-typescript"
+  },
+  {
+    name = "tillysofcastleton.com"
+  },
+  {
+    name        = "typescript-template"
+    is_template = true
+  },
+
 ]
