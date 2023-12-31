@@ -10,5 +10,6 @@ variable "repositories" {
     description = optional(string, "This repository is managed in Terraform")
     visibility  = optional(string, "public")
     is_template = optional(bool, false)
+    topics      = optional(list(string), [])
   }))
 }
