@@ -11,6 +11,6 @@ Below is a table of the infrastructure 👇 🏓
 | 🏷️ Name   | 👀 Location                             | 🚀 Deployment                                                                                                                  |
 | :------- | :------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
 | ⛅️ AWS    | [terraform/aws](./terraform/aws)       | [Terraform - AWS](https://github.com/connormaglynn/infrastructure/actions/workflows/terraform-aws.yml?query=branch%3Amain)    |
-| 👾 GitHub | [terraform/github](./terraform/github) | [Terraform - GitHub](https://github.com/connormaglynn/infrastructure/actions/workflows/terraform-aws.yml?query=branch%3Amain) |
+| 👾 GitHub | [terraform/github](./terraform/github) | [Terraform - GitHub](https://github.com/connormaglynn/infrastructure/actions/workflows/terraform-github.yml?query=branch%3Amain) |
 | 🔥 GCP    | N/A                                    | N/A                                                                                                                           |
 | 🔐 Auth0  | N/A                                    | N/A                                                                                                                           |
