@@ -68,5 +68,6 @@ repositories = [
     name       = "projects"
     topics     = []
     visibility = "private"
+    has_issues = true
   },
 ]

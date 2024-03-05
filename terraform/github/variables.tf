@@ -11,5 +11,6 @@ variable "repositories" {
     visibility  = optional(string, "public")
     is_template = optional(bool, false)
     topics      = optional(list(string), [])
+    has_issues  = optional(bool, false)
   }))
 }
