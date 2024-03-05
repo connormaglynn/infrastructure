@@ -64,5 +64,9 @@ repositories = [
     is_template = true
     topics      = ["typescript", "npm", "jest", "eslint", "prettier", "tailwind", "github-actions"]
   },
-
+  {
+    name       = "projects"
+    topics     = []
+    visibility = "private"
+  },
 ]
