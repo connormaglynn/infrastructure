@@ -17,6 +17,12 @@ repositories = [
     ]
   },
   {
+    name = "save-pinned-tabs-browser-plugin"
+    topics = [
+      "browser-extension", "chrome-extension", "github-actions"
+    ]
+  },
+  {
     name = "firebase-playground"
     topics = [
       "firebase", "nextjs", "typescript", "npm", "jest", "eslint", "prettier", "tailwind", "github-actions",
