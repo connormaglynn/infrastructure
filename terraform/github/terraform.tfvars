@@ -76,4 +76,8 @@ repositories = [
     visibility = "private"
     has_issues = true
   },
+  {
+    name   = "learning"
+    topics = []
+  },
 ]
