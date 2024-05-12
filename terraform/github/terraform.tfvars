@@ -17,6 +17,7 @@ repositories = [
     topics = [
       "browser-extension", "chrome-extension", "github-actions"
     ]
+    has_issues : true
   },
   {
     name = "firebase-playground"
