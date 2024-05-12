@@ -1,9 +1,5 @@
 repositories = [
   {
-    name   = "advent-of-code-typescript"
-    topics = ["advent-of-code", "typescript", "npm", "jest", "eslint", "prettier", "github-actions"]
-  },
-  {
     name = "connorglynn.com"
     topics = [
       "blog", "nextjs", "typescript", "npm", "jest", "eslint", "prettier", "tailwind", "github-actions", "github-pages"
@@ -21,6 +17,7 @@ repositories = [
     topics = [
       "browser-extension", "chrome-extension", "github-actions"
     ]
+    has_issues : true
   },
   {
     name = "firebase-playground"
@@ -46,14 +43,6 @@ repositories = [
     topics = ["terraform", "iac"]
   },
   {
-    name   = "learning-golang"
-    topics = ["golang"]
-  },
-  {
-    name   = "learning-python"
-    topics = ["python"]
-  },
-  {
     name   = "scripts"
     topics = ["shell"]
   },
@@ -64,11 +53,6 @@ repositories = [
   {
     name   = "tillysofcastleton.com"
     topics = ["nextjs", "typescript", "npm", "jest", "eslint", "prettier", "tailwind", "github-actions", "github-pages"]
-  },
-  {
-    name        = "typescript-template"
-    is_template = true
-    topics      = ["typescript", "npm", "jest", "eslint", "prettier", "tailwind", "github-actions"]
   },
   {
     name       = "projects"
