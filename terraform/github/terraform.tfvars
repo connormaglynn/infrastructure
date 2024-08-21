@@ -64,4 +64,8 @@ repositories = [
     name   = "learning"
     topics = []
   },
+  {
+    name   = "nvim-config"
+    topics = []
+  },
 ]
