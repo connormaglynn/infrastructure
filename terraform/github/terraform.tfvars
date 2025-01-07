@@ -39,6 +39,10 @@ repositories = [
     topics = ["cli", "typescript", "npm", "github-actions"]
   },
   {
+    name   = "imust-cli-go"
+    topics = ["cli", "go"]
+  },
+  {
     name   = "infrastructure"
     topics = ["terraform", "iac"]
   },
